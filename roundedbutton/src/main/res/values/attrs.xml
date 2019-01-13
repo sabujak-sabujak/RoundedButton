@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedButton">
+        <attr name="buttonColor" format="color" />
+
+        <attr name="buttonGradientStartColor" format="color" />
+        <attr name="buttonGradientEndColor" format="color" />
+
+        <attr name="buttonCornerRadius" format="dimension" />
+    </declare-styleable>
+</resources>
