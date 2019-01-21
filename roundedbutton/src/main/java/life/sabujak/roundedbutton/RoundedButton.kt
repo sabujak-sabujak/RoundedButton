@@ -4,14 +4,12 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.*
-import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.util.Property
 import android.view.MotionEvent
 import android.view.MotionEvent.*
-import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 
@@ -85,13 +83,11 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
 
         //ripple
         rippleColor = styledAttrs.getColor(R.styleable.RoundedButton_buttonRippleColor,
-                Color.RED)
+                Color.WHITE)
         rippleAlpha = styledAttrs.getInt(R.styleable.RoundedButton_buttonRippleAlpha, 100)
 
         initPaint()
         initRipplePaint()
-
-        setLayerType()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -254,16 +250,6 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         hoverAnimator.cancel()
 
         fadeAnimator.cancel()
-    }
-
-    private fun setLayerType() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            // looks like this is happening in some devices with lollipop and kitkat
-            // trying to fix https://github.com/lifesum/bugs/issues/7040
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-        } else {
-            setLayerType(View.LAYER_TYPE_HARDWARE, null)
-        }
     }
 
 }
