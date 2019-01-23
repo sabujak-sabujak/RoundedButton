@@ -55,14 +55,15 @@ Chameleon deals with the Status of RecyclerView.
 
 
 ## Result Screen
- <img src="/pic/sample.gif">
+ <img src="/pic/sample.gif" width = 50%>
 
 # Contribute
 We welcome any contributions.
 
 # To do
 - Add gradient direction
-- shadow
+- Shadow
+- Support AndroidX
 
 # Inspired by
  * [balysv/material-ripple](https://github.com/balysv/material-ripple), I was inspired by his code.
