@@ -55,10 +55,7 @@ Chameleon deals with the Status of RecyclerView.
 
 
 ## Result Screen
-
-| Project Name | Result Screen   |
-|:---------:|---|
-| Sample  <p style="float:left;"> <a href="https://play.google.com/store/apps/details?id=life.sabujak.roundedbuttonsample"> <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a></p> |  <img src="/pic/sample.gif"> |
+ <img src="/pic/sample.gif">
 
 # Contribute
 We welcome any contributions.
