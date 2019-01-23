@@ -6,7 +6,7 @@
 
 [![](https://jitpack.io/v/sabujak-sabujak/RoundedButton.svg)](https://jitpack.io/#sabujak-sabujak/RoundedButton)
 
-Chameleon deals with the Status of RecyclerView.
+Create round buttons quickly and easily.
 
 ## What's New in 0.1.0? :tada:
 - [Release] Release Library!
