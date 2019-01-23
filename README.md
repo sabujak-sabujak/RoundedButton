@@ -4,9 +4,9 @@
 
 <img src="/pic/logo.png" width = 20%> 
 
-[![](https://jitpack.io/v/sangcomz/RoundedButton.svg)](https://jitpack.io/#sangcomz/RoundedButton)
+[![](https://jitpack.io/v/sabujak-sabujak/RoundedButton.svg)](https://jitpack.io/#sabujak-sabujak/RoundedButton)
 
-Chameleon deals with the Status of RecyclerView.
+Create round buttons quickly and easily.
 
 ## What's New in 0.1.0? :tada:
 - [Release] Release Library!
@@ -20,7 +20,7 @@ Chameleon deals with the Status of RecyclerView.
     }
 
     dependencies {
-        compile 'com.github.sangcomz:RoundedButton:v0.1.0'
+        implementation 'com.github.sabujak-sabujak:RoundedButton:v0.1.1'
     }
 ```
 ### Usage
