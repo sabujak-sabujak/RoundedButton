@@ -21,7 +21,6 @@ Chameleon deals with the Status of RecyclerView.
 
     dependencies {
         implementation 'com.github.sabujak-sabujak:RoundedButton:v0.1.1'
-
     }
 ```
 ### Usage
