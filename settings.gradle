@@ -1,1 +1,8 @@
 include ':app', ':roundedbutton'
+
+gradle.ext.set('versionCode', 9)
+gradle.ext.set('versionName', '0.1.1')
+
+gradle.ext.set('minSdk', 15)
+gradle.ext.set('targetSdk', 28)
+gradle.ext.set('compileSdk', 28)

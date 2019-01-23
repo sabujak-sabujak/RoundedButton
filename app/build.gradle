@@ -5,13 +5,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+
+    compileSdkVersion gradle.compileSdk
     defaultConfig {
         applicationId "life.sabujak.roundedbuttonsample"
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion gradle.minSdk
+        targetSdkVersion gradle.targetSdk
+        versionName gradle.versionName
+        versionCode gradle.versionCode
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

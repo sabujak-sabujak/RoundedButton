@@ -1,7 +1,5 @@
 package life.sabujak.roundedbutton
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -36,16 +34,31 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
     private val fadeAnimator: AnimatorSet = AnimatorSet()
     private val hoverAnimator: AnimatorSet = AnimatorSet()
 
+    private var rippleColor: Int
     private var rippleRadius = 0f
     private var rippleAlpha = 100
 
+    private val mPath = Path()
+
+
     private var radiusProperty = object : Property<RoundedButton, Float>(Float::class.java, "radius") {
         override fun get(button: RoundedButton?): Float {
-            return getRadius()
+            return getRippleRadius()
         }
 
         override fun set(button: RoundedButton?, value: Float?) {
-            setRadius(value ?: 0f)
+            setRippleRadius(value ?: 0f)
+        }
+    }
+
+
+    private var circleAlphaProperty = object : Property<RoundedButton, Int>(Int::class.java, "rippleAlpha") {
+        override fun get(button: RoundedButton?): Int? {
+            return getRippleAlpha()
+        }
+
+        override fun set(button: RoundedButton?, value: Int?) {
+            setRippleAlpha(value ?: 100)
         }
     }
 
@@ -57,8 +70,10 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
 
         buttonCornerRadius = styledAttrs.getDimension(R.styleable.RoundedButton_buttonCornerRadius, 0f)
         buttonBackgroundColor = styledAttrs
-                .getColor(R.styleable.RoundedButton_buttonColor,
-                        ContextCompat.getColor(getContext(), R.color.colorDefault))
+                .getColor(
+                        R.styleable.RoundedButton_buttonColor,
+                        ContextCompat.getColor(getContext(), R.color.colorDefault)
+                )
 
         buttonGradientStartColor = styledAttrs
                 .getColor(R.styleable.RoundedButton_buttonGradientStartColor, -1)
@@ -66,11 +81,13 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         buttonGradientEndColor = styledAttrs
                 .getColor(R.styleable.RoundedButton_buttonGradientEndColor, -1)
 
-        setPaint()
-
         //ripple
-        ripplePaint.color = Color.parseColor("#ffffff")
-        ripplePaint.alpha = rippleAlpha
+        rippleColor = styledAttrs.getColor(R.styleable.RoundedButton_buttonRippleColor,
+                Color.WHITE)
+        rippleAlpha = styledAttrs.getInt(R.styleable.RoundedButton_buttonRippleAlpha, 100)
+
+        initPaint()
+        initRipplePaint()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -78,7 +95,8 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         if (w > 0
                 && h > 0
                 && buttonGradientStartColor != -1
-                && buttonGradientEndColor != -1)
+                && buttonGradientEndColor != -1
+        )
             setGradient(w.toFloat(), h.toFloat())
     }
 
@@ -86,21 +104,21 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         canvas ?: return
 
         val offset = 0f
-        val radius = buttonCornerRadius
+        var radius = buttonCornerRadius
 
         rectF.set(offset, offset, width.toFloat() - offset, height.toFloat() - offset)
+
+        mPath.rewind()
+        mPath.addRoundRect(rectF, buttonCornerRadius,
+                buttonCornerRadius, Path.Direction.CCW)
+        canvas.clipPath(mPath)
+
         canvas.drawRoundRect(rectF, radius, radius, paint)
+
         super.onDraw(canvas)
 
-
         //ripple
-        canvas.drawCircle(currentCoords.x.toFloat(), currentCoords.y.toFloat(), getRadius(), ripplePaint)
-    }
-
-    private fun setPaint() {
-        paint.style = Paint.Style.FILL
-        paint.color = buttonBackgroundColor
-        paint.isAntiAlias = true
+        canvas.drawCircle(currentCoords.x.toFloat(), currentCoords.y.toFloat(), getRippleRadius(), ripplePaint)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -125,15 +143,23 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         return super.onTouchEvent(event)
     }
 
+
+    private fun initPaint() {
+        paint.style = Paint.Style.FILL
+        paint.color = buttonBackgroundColor
+        paint.isAntiAlias = true
+    }
+
+    private fun initRipplePaint() {
+        ripplePaint.isAntiAlias = true
+        ripplePaint.color = rippleColor
+        ripplePaint.alpha = rippleAlpha
+    }
+
     private fun startRipple() {
         val endRadius = getEndRadius()
 
         cancelAllAnimations()
-
-        rippleAnimator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-            }
-        })
 
         val ripple = ObjectAnimator.ofFloat(this, radiusProperty, rippleRadius, endRadius)
         ripple.duration = 200
@@ -149,7 +175,7 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         val endRadius = getEndRadius()
         cancelAllAnimations()
 
-        setRadius(0f)
+        setRippleRadius(0f)
         setRippleAlpha(100)
 
         val ripple = ObjectAnimator.ofFloat(this, radiusProperty, rippleRadius, endRadius)
@@ -160,39 +186,26 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
         hoverAnimator.start()
     }
 
-    private fun getRadius(): Float {
+    private fun getRippleRadius(): Float {
         return rippleRadius
     }
 
-    fun setRadius(radius: Float) {
+    private fun setRippleRadius(radius: Float) {
         this.rippleRadius = radius
         invalidate()
     }
 
-    private var circleAlphaProperty = object : Property<RoundedButton, Int>(Int::class.java, "rippleAlpha") {
-        override fun get(`object`: RoundedButton): Int? {
-            return `object`.getRippleAlpha()
-        }
-
-        override fun set(`object`: RoundedButton, value: Int?) {
-            `object`.setRippleAlpha(value!!)
-        }
-    }
-
-    fun getRippleAlpha(): Int {
+    private fun getRippleAlpha(): Int {
         return ripplePaint.alpha
     }
 
-    fun setRippleAlpha(rippleAlpha: Int) {
+    private fun setRippleAlpha(rippleAlpha: Int) {
         ripplePaint.alpha = rippleAlpha
         invalidate()
     }
 
 
     private fun getEndRadius(): Float {
-        val width = width
-        val height = height
-
         val halfWidth = width / 2
         val halfHeight = height / 2
 
@@ -226,6 +239,7 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
                 buttonGradientEndColor,
                 Shader.TileMode.REPEAT
         )
+
         invalidate()
     }
 
@@ -237,4 +251,5 @@ class RoundedButton(context: Context?, attrs: AttributeSet?) : AppCompatTextView
 
         fadeAnimator.cancel()
     }
+
 }
