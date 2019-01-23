@@ -8,7 +8,7 @@
 
 Create round buttons quickly and easily.
 
-## What's New in 0.1.0? :tada:
+## What's New in 0.1.1? :tada:
 - [Release] Release Library!
 
 ## How to Use
