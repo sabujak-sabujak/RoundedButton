@@ -70,7 +70,7 @@ We welcome any contributions.
 
 # License
 
-    Copyright 2019 Jeong Seok-Won
+    Copyright 2019 sabujak-sabujak
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
